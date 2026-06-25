@@ -39,7 +39,10 @@
     font-size:18px;
     line-height:1.6;
     display:flex;
-    min-height:100vh;
+    height:100vh;
+    overflow:hidden;
+    padding:16px;
+    gap:16px;
   }
   h1,h2,h3,.brand-title,.btn-label,.topbar-title{font-family:'Lexend',sans-serif}
 
@@ -49,36 +52,39 @@
     flex:0 0 var(--sidebar-w);
     background:linear-gradient(168deg,var(--violet-deep),var(--violet) 70%,#4a2486);
     color:#fff;
-    position:sticky;
-    top:0;
-    height:100vh;
+    height:100%;
+    border-radius:24px;
     display:flex;
     flex-direction:column;
     box-shadow:var(--shadow);
+    overflow:hidden;
     z-index:20;
   }
   .brand{
-    padding:24px 22px 18px;
+    padding:20px 20px 16px;
     display:flex;
     align-items:center;
     gap:13px;
     border-bottom:1px solid rgba(255,255,255,.12);
   }
   .brand-badge{
-    width:48px;height:48px;border-radius:14px;flex:0 0 48px;
-    background:linear-gradient(135deg,var(--teal),var(--coral));
+    width:52px;height:52px;border-radius:14px;flex:0 0 52px;
+    background:#fff;padding:5px;
     display:grid;place-items:center;
-    box-shadow:0 8px 20px -8px rgba(255,122,102,.7);
+    box-shadow:0 8px 20px -10px rgba(0,0,0,.5);
   }
+  .brand-badge img{width:100%;height:100%;object-fit:contain;border-radius:9px;display:block}
   .brand-text small{
     display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;
     color:rgba(255,255,255,.62);font-family:'Lexend',sans-serif;font-weight:500;
   }
   .brand-title{font-size:20px;font-weight:700;line-height:1.15}
 
-  .nav-scroll{flex:1;overflow-y:auto;padding:14px 12px 24px}
-  .nav-scroll::-webkit-scrollbar{width:9px}
-  .nav-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:9px}
+  .nav-scroll{flex:1;min-height:0;overflow-y:auto;padding:14px 12px 28px}
+  .nav-scroll::-webkit-scrollbar{width:8px}
+  .nav-scroll::-webkit-scrollbar-track{background:transparent}
+  .nav-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.20);border-radius:9px;border:2px solid transparent;background-clip:padding-box}
+  .nav-scroll{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.25) transparent}
   .nav-group-label{
     font-family:'Lexend',sans-serif;font-size:11px;font-weight:600;
     letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);
@@ -108,61 +114,103 @@
   .nav-btn.active .num{color:rgba(255,255,255,.85)}
   .nav-btn.active .ico{opacity:1}
 
+  .sidebar-footer{
+    flex:0 0 auto;
+    padding:14px 18px 16px;
+    border-top:1px solid rgba(255,255,255,.12);
+    display:flex;align-items:center;gap:11px;
+    background:rgba(0,0,0,.12);
+  }
+  .sidebar-footer .sf-dot{
+    width:34px;height:34px;border-radius:10px;flex:0 0 34px;
+    background:linear-gradient(135deg,var(--teal),var(--coral));
+    display:grid;place-items:center;
+  }
+  .sidebar-footer .sf-dot svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .sf-text small{
+    display:block;font-family:'Lexend',sans-serif;font-size:10px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);
+  }
+  .sf-text .sf-name{font-family:'Lexend',sans-serif;font-size:15px;font-weight:600;color:#fff;line-height:1.2}
+  .sf-text .sf-school{font-size:12px;color:rgba(255,255,255,.62);line-height:1.3}
+
   /* ---------- MAIN ---------- */
-  .main{flex:1;min-width:0;display:flex;flex-direction:column}
+  .main{
+    flex:1;min-width:0;height:100%;
+    display:flex;flex-direction:column;overflow:hidden;
+    background:var(--card);border-radius:24px;border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+  }
   .topbar{
-    position:sticky;top:0;z-index:10;
-    backdrop-filter:saturate(1.4) blur(10px);
-    background:rgba(251,247,241,.82);
+    flex:0 0 auto;z-index:10;
+    background:rgba(251,247,241,.7);
     border-bottom:1px solid var(--line);
-    padding:16px 34px;display:flex;align-items:center;gap:16px;
+    padding:14px 26px;display:flex;align-items:center;gap:16px;
+    border-radius:24px 24px 0 0;
   }
   .topbar .chip{
     font-family:'Lexend',sans-serif;font-weight:600;font-size:13px;
     color:#fff;background:linear-gradient(120deg,var(--violet),var(--teal-deep));
     padding:6px 13px;border-radius:999px;letter-spacing:.02em;
   }
-  .topbar-title{font-size:22px;font-weight:600}
-  .topbar-sub{color:var(--ink-soft);font-size:15px}
+  .topbar-title{font-size:21px;font-weight:600;line-height:1.15}
+  .topbar-sub{color:var(--ink-soft);font-size:14px}
+  .topbar .spacer{flex:1}
+  .topbar-nav{display:flex;gap:10px;flex:0 0 auto}
+  .topbar-nav button{
+    font-family:'Lexend',sans-serif;font-weight:600;font-size:14px;cursor:pointer;
+    border:1px solid var(--line);background:#fff;color:var(--violet);
+    padding:10px 16px;border-radius:13px;min-height:46px;
+    display:flex;align-items:center;gap:8px;transition:transform .12s,box-shadow .18s,background .18s,opacity .18s;
+  }
+  .topbar-nav button:hover:not(:disabled){transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+  .topbar-nav button:disabled{opacity:.32;cursor:default}
+  .topbar-nav button svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .topbar-nav button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
-  .stage{padding:30px 34px 60px;max-width:1500px;width:100%}
+  .stage{flex:1;min-height:0;padding:24px 28px;width:100%}
   .lesson{
+    height:100%;
     display:grid;
-    grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
-    gap:30px;align-items:start;
+    grid-template-columns:calc((100vh - 190px) * 9 / 16) minmax(0,1fr);
+    gap:30px;align-items:stretch;
   }
 
-  /* video a sinistra */
-  .video-wrap{position:sticky;top:90px}
-  .video-card{
-    background:#000;border-radius:var(--radius);overflow:hidden;
-    box-shadow:var(--shadow);border:1px solid rgba(36,26,55,.18);
-    aspect-ratio:9/16;max-height:74vh;margin:0 auto;width:100%;
-    display:flex;align-items:center;justify-content:center;
+  /* video a sinistra — niente bande nere, riempie l'altezza disponibile */
+  .video-wrap{height:100%;min-height:0;display:flex;flex-direction:column}
+  .video-frame{
+    flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
   }
-  .video-card video{width:100%;height:100%;object-fit:contain;background:#000;display:block}
+  .video-frame video{
+    max-height:100%;max-width:100%;width:auto;height:auto;display:block;
+    border-radius:var(--radius);box-shadow:var(--shadow);
+  }
   .video-meta{
-    margin-top:14px;text-align:center;color:var(--ink-soft);font-size:14px;
+    flex:0 0 auto;margin-top:12px;text-align:center;color:var(--ink-soft);font-size:14px;
     display:flex;align-items:center;justify-content:center;gap:8px;
   }
   .video-meta svg{width:18px;height:18px;stroke:var(--teal-deep);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-  /* testo a destra */
+  /* testo a destra — scorre internamente solo se troppo lungo */
   .text-card{
+    height:100%;overflow-y:auto;
     background:var(--card);border-radius:var(--radius);
-    padding:34px 36px;box-shadow:var(--shadow-sm);border:1px solid var(--line);
+    padding:6px 30px 6px 4px;
+    scrollbar-width:thin;scrollbar-color:rgba(36,26,55,.22) transparent;
   }
+  .text-card::-webkit-scrollbar{width:8px}
+  .text-card::-webkit-scrollbar-thumb{background:rgba(36,26,55,.18);border-radius:9px}
   .text-card .eyebrow{
     font-family:'Lexend',sans-serif;font-weight:600;font-size:13px;
     letter-spacing:.14em;text-transform:uppercase;color:var(--coral-deep);
     display:flex;align-items:center;gap:9px;margin-bottom:10px;
   }
   .text-card .eyebrow svg{width:20px;height:20px;stroke:var(--coral-deep);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  .text-card h2{font-size:30px;font-weight:700;line-height:1.18;margin-bottom:6px;color:var(--ink)}
-  .text-card .lead{font-size:19px;color:var(--ink-soft);margin-bottom:22px}
+  .text-card h2{font-size:27px;font-weight:700;line-height:1.16;margin-bottom:6px;color:var(--ink)}
+  .text-card .lead{font-size:18px;color:var(--ink-soft);margin-bottom:18px}
   .text-card h3{
     font-size:18px;font-weight:600;color:var(--violet);
-    margin:24px 0 10px;display:flex;align-items:center;gap:9px;
+    margin:20px 0 9px;display:flex;align-items:center;gap:9px;
   }
   .text-card h3 svg{width:20px;height:20px;stroke:var(--teal-deep);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .text-card p{margin-bottom:14px}
@@ -183,33 +231,25 @@
   .tip b{font-family:'Lexend',sans-serif;color:var(--violet);display:block;margin-bottom:2px;font-size:15px}
   .tip span{font-size:16px;color:var(--ink-soft)}
 
-  .lesson-nav{
-    grid-column:1 / -1;display:flex;justify-content:space-between;gap:14px;
-    margin-top:8px;
-  }
-  .lesson-nav button{
-    font-family:'Lexend',sans-serif;font-weight:600;font-size:15px;cursor:pointer;
-    border:1px solid var(--line);background:var(--card);color:var(--violet);
-    padding:13px 20px;border-radius:14px;min-height:50px;
-    display:flex;align-items:center;gap:9px;transition:transform .12s,box-shadow .18s,background .18s;
-  }
-  .lesson-nav button:hover:not(:disabled){transform:translateY(-2px);box-shadow:var(--shadow-sm);background:#fff}
-  .lesson-nav button:disabled{opacity:.35;cursor:default}
-  .lesson-nav button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-  .lesson-nav button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
-
   /* ---------- Mobile toggle ---------- */
   .menu-toggle{display:none}
 
-  @media (max-width:1080px){
-    .lesson{grid-template-columns:1fr}
-    .video-wrap{position:static}
-    .video-card{max-height:none;max-width:430px}
+  @media (max-width:980px){
+    body{flex-direction:column;height:auto;overflow:auto;padding:0;gap:0}
+    .main{height:auto;overflow:visible;border-radius:0;border:0}
+    .topbar{position:sticky;top:0;backdrop-filter:saturate(1.4) blur(10px);border-radius:0}
+    .stage{flex:none;min-height:0;overflow:visible;padding:20px 18px 40px}
+    .lesson{height:auto;grid-template-columns:1fr;gap:22px}
+    .video-wrap{height:auto}
+    .video-frame{display:block}
+    .video-frame video{max-height:72vh;margin:0 auto}
+    .text-card{height:auto;overflow:visible;padding:4px}
+    .topbar-nav button span.lbl{display:none}
   }
   @media (max-width:860px){
-    body{flex-direction:column}
     .sidebar{
       position:fixed;left:0;top:0;height:100vh;width:84vw;max-width:320px;
+      border-radius:0;
       transform:translateX(-104%);transition:transform .28s ease;
     }
     .sidebar.open{transform:translateX(0)}
@@ -232,10 +272,8 @@
 
   <aside class="sidebar" id="sidebar" aria-label="Indice delle lezioni">
     <div class="brand">
-      <span class="brand-badge" aria-hidden="true">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="4" y="2.5" width="16" height="19" rx="2.4"/><line x1="9.5" y1="19" x2="14.5" y2="19"/>
-        </svg>
+      <span class="brand-badge">
+        <img src="logo.jpg" alt="Logo Scuola Sacra Famiglia">
       </span>
       <span class="brand-text">
         <small>Alfabetizzazione</small>
@@ -243,6 +281,16 @@
       </span>
     </div>
     <nav class="nav-scroll" id="navList"></nav>
+    <div class="sidebar-footer">
+      <span class="sf-dot" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 3l8 4-8 4-8-4z"/><path d="M6 9.5V14c0 1.7 2.7 3 6 3s6-1.3 6-3V9.5"/><line x1="20" y1="7" x2="20" y2="12.5"/></svg>
+      </span>
+      <span class="sf-text">
+        <small>Animatore Digitale</small>
+        <span class="sf-name">Andrea Cerioli</span>
+        <span class="sf-school">Scuola Sacra Famiglia · Orzinuovi (BS)</span>
+      </span>
+    </div>
   </aside>
 
   <div class="scrim" id="scrim"></div>
@@ -257,13 +305,25 @@
         <div class="topbar-title" id="topTitle">—</div>
         <div class="topbar-sub" id="topSub">Scegli una lezione dalla barra a sinistra</div>
       </div>
+      <span class="spacer"></span>
+      <div class="topbar-nav">
+        <button id="prevBtn" aria-label="Lezione precedente">
+          <svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg>
+          <span class="lbl">Precedente</span>
+        </button>
+        <button id="nextBtn" aria-label="Lezione successiva">
+          <span class="lbl">Successiva</span>
+          <svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19"/></svg>
+        </button>
+      </div>
     </header>
 
     <section class="stage">
       <article class="lesson">
         <div class="video-wrap">
-          <div class="video-card">
-            <video id="player" controls playsinline preload="metadata"></video>
+          <div class="video-frame">
+            <video id="player" controls playsinline preload="metadata"
+                   controlslist="nofullscreen noplaybackrate nodownload" disablepictureinpicture></video>
           </div>
           <div class="video-meta">
             <svg viewBox="0 0 24 24"><polygon points="9 7 17 12 9 17 9 7"/><circle cx="12" cy="12" r="10"/></svg>
@@ -272,17 +332,6 @@
         </div>
 
         <div class="text-card" id="textCard"></div>
-
-        <div class="lesson-nav">
-          <button id="prevBtn">
-            <svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg>
-            Precedente
-          </button>
-          <button id="nextBtn">
-            Successiva
-            <svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19"/></svg>
-          </button>
-        </div>
       </article>
     </section>
   </main>
@@ -596,7 +645,7 @@ function select(i){
   });
   prevBtn.disabled=(i===0);
   nextBtn.disabled=(i===LESSONS.length-1);
-  document.querySelector('.stage').scrollIntoView({behavior:'smooth',block:'start'});
+  textCard.scrollTop=0;
   const act=document.querySelector('.nav-btn.active');
   if(act)act.scrollIntoView({block:'nearest'});
 }
@@ -611,6 +660,22 @@ function openMenu(){sidebar.classList.add('open');scrim.classList.add('show');}
 function closeMenu(){sidebar.classList.remove('open');scrim.classList.remove('show');}
 menuToggle.addEventListener('click',openMenu);
 scrim.addEventListener('click',closeMenu);
+
+// ---------- Vincoli sul player: niente fullscreen, PiP o cambio velocità ----------
+function lockRate(){ if(player.playbackRate!==1) player.playbackRate=1; }
+player.addEventListener('ratechange',lockRate);
+player.addEventListener('play',lockRate);
+function exitFs(){
+  const d=document;
+  if(d.fullscreenElement===player||d.webkitFullscreenElement===player){
+    (d.exitFullscreen||d.webkitExitFullscreen||function(){}).call(d);
+  }
+}
+player.addEventListener('webkitbeginfullscreen',()=>{ try{player.webkitExitFullscreen&&player.webkitExitFullscreen();}catch(e){} });
+document.addEventListener('fullscreenchange',exitFs);
+document.addEventListener('webkitfullscreenchange',exitFs);
+// blocca doppio-tap/pizzico per ingrandire il video
+['dblclick','gesturestart'].forEach(ev=>player.addEventListener(ev,e=>e.preventDefault()));
 
 // ---------- Avvio: primo video = intro ----------
 select(0);

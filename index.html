@@ -100,11 +100,22 @@
   }
   .nav-btn .ico{flex:0 0 26px;width:26px;height:26px;display:grid;place-items:center;opacity:.92}
   .nav-btn .ico svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .nav-meta{display:flex;align-items:center;gap:7px;margin-left:auto;flex:0 0 auto}
   .nav-btn .num{
-    margin-left:auto;font-family:'Lexend',sans-serif;font-size:12px;font-weight:600;
+    font-family:'Lexend',sans-serif;font-size:12px;font-weight:600;
     color:rgba(255,255,255,.45);
   }
-  .btn-label{font-weight:500}
+  .seen-ico{display:none;width:18px;height:18px;border-radius:50%;background:var(--teal);place-items:center}
+  .seen-ico svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .nav-btn.is-seen .seen-ico{display:grid}
+  .btn-label{font-weight:500;flex:1;min-width:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .guide-tag{
+    font-family:'Lexend',sans-serif;font-size:10px;font-weight:600;letter-spacing:.08em;
+    text-transform:uppercase;color:#fff;background:rgba(255,255,255,.18);
+    padding:2px 7px;border-radius:999px;
+  }
+  .nav-btn.active .guide-tag{background:rgba(255,255,255,.28)}
+  .guide-tag.special{background:linear-gradient(120deg,rgba(19,184,166,.55),rgba(255,122,102,.55))}
   .nav-btn:hover{background:rgba(255,255,255,.10);color:#fff;transform:translateX(2px)}
   .nav-btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
   .nav-btn.active{
@@ -175,9 +186,41 @@
     grid-template-columns:calc((100vh - 190px) * 9 / 16) minmax(0,1fr);
     gap:30px;align-items:stretch;
   }
+  .lesson[hidden]{display:none}
+
+  /* ---------- Galleria video (sezione speciale) ---------- */
+  .gallery{height:100%;display:flex;flex-direction:column;min-height:0}
+  .gallery[hidden]{display:none}
+  .gallery-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+  .gallery-frame{max-width:100%;margin:0 auto}
+  .gallery-frame.h{width:min(100%, calc((100vh - 250px) * 16 / 9));aspect-ratio:16/9}
+  .gallery-frame.v{height:calc(100vh - 250px);aspect-ratio:9/16;max-width:100%}
+  .gallery-frame iframe{display:block;width:100%;height:100%;border:0;border-radius:var(--radius);box-shadow:var(--shadow);background:#000}
+  .gallery-nav{
+    flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:12px;padding-top:18px;flex-wrap:wrap;
+  }
+  .gallery-dots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .gallery-dot{
+    width:42px;height:42px;border-radius:12px;cursor:pointer;
+    border:1px solid var(--line);background:#fff;color:var(--ink-soft);
+    font-family:'Lexend',sans-serif;font-weight:600;font-size:15px;
+    transition:transform .12s,box-shadow .18s,background .18s,color .18s;
+  }
+  .gallery-dot:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+  .gallery-dot.active{background:linear-gradient(120deg,var(--teal),var(--coral));color:#fff;border-color:transparent}
+  .gallery-dot:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+  .gallery-arrow{
+    width:46px;height:46px;border-radius:13px;cursor:pointer;flex:0 0 auto;
+    border:1px solid var(--line);background:#fff;color:var(--violet);
+    display:grid;place-items:center;transition:transform .12s,box-shadow .18s;
+  }
+  .gallery-arrow:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+  .gallery-arrow svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .gallery-arrow:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
   /* video a sinistra — niente bande nere, riempie l'altezza disponibile */
   .video-wrap{height:100%;min-height:0;display:flex;flex-direction:column}
+  .video-wrap[hidden]{display:none}
   .video-frame{
     flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
   }
@@ -190,6 +233,28 @@
     display:flex;align-items:center;justify-content:center;gap:8px;
   }
   .video-meta svg{width:18px;height:18px;stroke:var(--teal-deep);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+  /* pannello per le schede senza video */
+  .guide-panel{
+    height:100%;border-radius:var(--radius);
+    background:linear-gradient(160deg,rgba(58,29,110,.06),rgba(19,184,166,.10));
+    border:1.5px dashed rgba(58,29,110,.28);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+    text-align:center;padding:24px;
+  }
+  .guide-panel[hidden]{display:none}
+  .gp-ico{width:88px;height:88px;border-radius:24px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--violet),var(--teal-deep));box-shadow:var(--shadow)}
+  .gp-ico svg{width:46px;height:46px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .gp-tag{font-family:'Lexend',sans-serif;font-weight:600;font-size:14px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--violet)}
+  .gp-text{color:var(--ink-soft);font-size:16px;line-height:1.5}
+
+  .text-card .source{
+    margin-top:22px;padding-top:16px;border-top:1px solid var(--line);
+    font-size:14px;color:var(--ink-soft);display:flex;align-items:center;gap:8px;
+  }
+  .text-card .source svg{width:18px;height:18px;stroke:var(--teal-deep);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 18px}
 
   /* testo a destra — scorre internamente solo se troppo lungo */
   .text-card{
@@ -243,7 +308,12 @@
     .video-wrap{height:auto}
     .video-frame{display:block}
     .video-frame video{max-height:72vh;margin:0 auto}
+    .guide-panel{height:auto;min-height:230px}
     .text-card{height:auto;overflow:visible;padding:4px}
+    .gallery{height:auto}
+    .gallery-stage{display:block}
+    .gallery-frame.h{width:100%}
+    .gallery-frame.v{height:auto;width:min(100%,300px)}
     .topbar-nav button span.lbl{display:none}
   }
   @media (max-width:860px){
@@ -319,8 +389,8 @@
     </header>
 
     <section class="stage">
-      <article class="lesson">
-        <div class="video-wrap">
+      <article class="lesson" id="lessonView">
+        <div class="video-wrap" id="videoWrap">
           <div class="video-frame">
             <video id="player" controls playsinline preload="metadata"
                    controlslist="nofullscreen noplaybackrate nodownload" disablepictureinpicture></video>
@@ -331,8 +401,27 @@
           </div>
         </div>
 
+        <div class="guide-panel" id="guidePanel" hidden>
+          <span class="gp-ico" aria-hidden="true"></span>
+          <span class="gp-tag">Scheda guida</span>
+          <span class="gp-text">Argomento spiegato a testo,<br>senza video</span>
+        </div>
+
         <div class="text-card" id="textCard"></div>
       </article>
+
+      <section class="gallery" id="galleryView" hidden aria-label="Galleria video Keynote">
+        <div class="gallery-stage" id="galleryStage"></div>
+        <div class="gallery-nav">
+          <button class="gallery-arrow" id="galleryPrev" aria-label="Video precedente">
+            <svg viewBox="0 0 24 24"><polyline points="15 5 8 12 15 19"/></svg>
+          </button>
+          <div class="gallery-dots" id="galleryDots"></div>
+          <button class="gallery-arrow" id="galleryNext" aria-label="Video successivo">
+            <svg viewBox="0 0 24 24"><polyline points="9 5 16 12 9 19"/></svg>
+          </button>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -358,7 +447,14 @@ const ICON = {
   magic:'<path d="M12 3v3"/><path d="M12 18v3"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="M5.5 5.5l2 2"/><path d="M16.5 16.5l2 2"/><path d="M18.5 5.5l-2 2"/><path d="M7.5 16.5l-2 2"/><circle cx="12" cy="12" r="3"/>',
   check:'<polyline points="20 6 9 17 4 12"/>',
   steps:'<line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4.5" cy="6" r="1.4"/><circle cx="4.5" cy="12" r="1.4"/><circle cx="4.5" cy="18" r="1.4"/>',
-  spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>'
+  spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+  airdrop:'<path d="M7.5 13.5a6 6 0 0 1 9 0"/><path d="M4.8 10.2a10 10 0 0 1 14.4 0"/><circle cx="12" cy="17.5" r="1.5"/>',
+  appstore:'<rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8.3 16l3.7-7.5L15.7 16"/><line x1="9.6" y1="13.4" x2="14.4" y2="13.4"/>',
+  screenshot:'<path d="M4 8.5V6a2 2 0 0 1 2-2h2.5"/><path d="M15.5 4H18a2 2 0 0 1 2 2v2.5"/><path d="M20 15.5V18a2 2 0 0 1-2 2h-2.5"/><path d="M8.5 20H6a2 2 0 0 1-2-2v-2.5"/><rect x="8.5" y="8.5" width="7" height="7" rx="1.2"/>',
+  share:'<path d="M12 15V4"/><path d="M8.5 7.5L12 4l3.5 3.5"/><path d="M6 12v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6"/>',
+  download:'<path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 19h14"/>',
+  book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20"/>',
+  gallery:'<rect x="2.5" y="5" width="19" height="12" rx="2"/><polygon points="10 8.5 14.5 11 10 13.5"/><line x1="7" y1="20" x2="17" y2="20"/>'
 };
 function svg(name,extra){return '<svg viewBox="0 0 24 24">'+(ICON[name]||'')+'</svg>';}
 
@@ -384,10 +480,12 @@ const LESSONS=[
  video:V+'byz9n3f6hsbsi7gd0upwg/gesture.mp4?rlkey=ftmy11iihk7hifgupbp2adp1j&raw=1',
  body:[
    ['p','Ogni movimento delle dita ha un significato preciso. Provali con calma: dopo pochi minuti diventano automatici.'],
-   ['h3','steps','I gesti principali'],
-   ['ul',['<b>Tocco</b> (tap): apri un’app o premi un pulsante.','<b>Scorrimento</b> (swipe): fai scorrere le pagine o le liste.','<b>Pizzico</b> (pinch): avvicina due dita per rimpicciolire, allontanale per ingrandire.','<b>Tieni premuto</b>: fa comparire menu e opzioni nascoste.']],
-   ['h3','spark','Tornare alla Home'],
-   ['p','Scorri con un dito dal bordo basso dello schermo verso l’alto: chiudi così qualsiasi app e torni alla schermata principale.'],
+   ['h3','steps','I gesti di base'],
+   ['ul',['<b>Tocca</b>: apri un’app o premi un pulsante.','<b>Tocca e tieni premuto</b>: fa comparire menu e opzioni nascoste.','<b>Scorri</b>: fai scorrere pagine ed elenchi.','<b>Allontana o avvicina due dita</b>: ingrandisci o rimpicciolisci.']],
+   ['h3','spark','Tornare alla schermata Home'],
+   ['p','Scorri verso l’alto dal bordo inferiore dello schermo: chiudi così qualsiasi app e torni alla schermata Home.'],
+   ['h3','split','Passare da un’app all’altra'],
+   ['p','Scorri verso l’alto dal bordo inferiore, fai una pausa al centro dello schermo e solleva il dito: si apre il <b>selettore app</b> con tutte le app aperte. Scorri a destra o a sinistra per scegliere.'],
    ['tip','Non serve premere forte: l’iPad sente anche un tocco leggero. La delicatezza funziona meglio della forza.']
  ]},
 
@@ -433,9 +531,11 @@ const LESSONS=[
  lead:'L’iPad può mostrare due app affiancate: comodissimo per copiare da una parte e scrivere dall’altra.',
  video:V+'iurazpi10vo1xy7k2itam/spit_screen.mp4?rlkey=uj1237ezao7xp6z80su50z5c1&raw=1',
  body:[
-   ['p','Con la vista divisa (<b>Split View</b>) lavori in due app contemporaneamente, una a sinistra e una a destra dello schermo.'],
-   ['h3','steps','Come si fa'],
-   ['ul',['Tocca i <b>tre puntini</b> in alto in un’app.','Scegli <b>Affianca finestra</b>.','Apri dalla Home la seconda app che vuoi mettere accanto.','Trascina la <b>barra centrale</b> per dare più spazio a una delle due.']],
+   ['p','Con <b>Split View</b> lavori in due app affiancate, una a sinistra e una a destra. Con <b>Slide Over</b> tieni invece una seconda app in una finestrella che galleggia sopra le altre.'],
+   ['h3','steps','Aprire due app affiancate'],
+   ['ul',['In un’app, tocca il <b>pulsante Multitasking</b> (i tre puntini) in alto.','Tocca <b>Split View</b>: l’app si sposta di lato e scopre la schermata Home.','Tocca la seconda app che vuoi mettere accanto.','Trascina la <b>barra centrale</b> per dare più spazio a una delle due.']],
+   ['h3','spark','La finestra che galleggia (Slide Over)'],
+   ['p','Dallo stesso pulsante scegli <b>Slide Over</b>: la seconda app diventa una finestrella che puoi spostare a destra o a sinistra trascinandone il bordo in alto.'],
    ['tip','Per tornare a una sola app, trascina la barra centrale fino al bordo dello schermo.']
  ]},
 
@@ -559,6 +659,68 @@ const LESSONS=[
    ['tip','Poche parole per diapositiva: le immagini e la tua voce raccontano, il testo non deve dire tutto.']
  ]},
 
+{key:'keynote-gallery',icon:'gallery',group:'Speciale',type:'gallery',
+ title:'Keynote · Galleria video',
+ videos:[
+   {title:'Progettare slide',id:'cHOLMB1Xv3M',vertical:false},
+   {title:'Testo bordato',id:'bjZesfQueQQ',vertical:true},
+   {title:'10 funzioni',id:'N8dIk89YaUg',vertical:false},
+   {title:'Sfondi',id:'kmuSc9XNNkU',vertical:false},
+   {title:'Transizione',id:'-nf_T_VSZfU',vertical:false},
+   {title:'Animazioni',id:'-JDth3_ME-c',vertical:false},
+   {title:'Animazioni segreti',id:'0G2rXCD-HVI',vertical:false},
+   {title:'Le mie pizze',id:'qcu2iEv8cX4',vertical:false},
+   {title:'Presentazioni old school',id:'rIwQW35RAXE',vertical:false}
+ ]},
+
+{key:'airdrop',icon:'airdrop',group:'Condividere e installare',noVideo:true,
+ title:'AirDrop: condividere senza fili',
+ eyebrow:'Inviare a dispositivi vicini',
+ lead:'Con AirDrop invii foto, video, documenti e altro agli altri dispositivi Apple vicini, senza cavi e senza internet.',
+ source:'support.apple.com · Manuale utente di iPad',
+ body:[
+   ['p','AirDrop usa il Wi-Fi e il Bluetooth per spostare i file da un dispositivo all’altro. I trasferimenti sono protetti: chi riceve può accettare o rifiutare ogni invio.'],
+   ['h3','steps','Prima di iniziare'],
+   ['ul',['Il destinatario deve essere <b>vicino</b>, nel raggio del Bluetooth.','Su entrambi i dispositivi devono essere attivi <b>Wi-Fi</b> e <b>Bluetooth</b>.']],
+   ['h3','share','Inviare un elemento'],
+   ['ul',['Apri l’elemento (una foto, un file…) e tocca il pulsante <b>Condividi</b>.','Tocca <b>AirDrop</b>, poi tocca il dispositivo della persona a cui vuoi inviarlo.','La persona riceve un avviso e tocca <b>Accetta</b> per ricevere.']],
+   ['h3','spark','Scegliere chi può inviarti elementi'],
+   ['p','Apri il <b>Centro di Controllo</b>, tieni premuto il gruppo di comandi in alto a sinistra, poi tocca <b>AirDrop</b>. Scegli <b>Solo contatti</b> oppure <b>Tutti per 10 minuti</b>.'],
+   ['tip','A scuola imposta “Solo contatti” o disattiva AirDrop quando non serve: eviti di ricevere file da sconosciuti.']
+ ]},
+
+{key:'appstore',icon:'appstore',group:'Condividere e installare',noVideo:true,
+ title:'App Store: trovare e installare app',
+ eyebrow:'Il negozio delle app',
+ lead:'Sull’App Store scopri, scarichi e installi nuove app per il tuo iPad: giochi, strumenti per studiare e app per creare.',
+ source:'support.apple.com · Manuale utente di iPad',
+ body:[
+   ['p','L’App Store è il negozio ufficiale delle app. È il posto sicuro da cui prendere i programmi nuovi per l’iPad.'],
+   ['h3','steps','Cercare un’app'],
+   ['ul',['Apri l’<b>App Store</b> e sfoglia le schede <b>Oggi</b>, <b>Giochi</b>, <b>App</b> o <b>Arcade</b>.','Oppure tocca la scheda <b>Cerca</b> e scrivi il nome di ciò che ti serve.']],
+   ['h3','download','Scaricare un’app'],
+   ['ul',['Tocca l’app per vederne descrizione, foto e recensioni.','Tocca <b>Ottieni</b> per le app gratuite, o il <b>prezzo</b> per quelle a pagamento.','Conferma con <b>Face ID</b>, <b>Touch ID</b> o la password dell’ID Apple.']],
+   ['h3','spark','Ritrovare le app'],
+   ['p','Le app scaricate compaiono nella <b>schermata Home</b> e nella <b>Libreria app</b>. Se cancelli un’app, puoi riscaricarla in seguito senza pagarla di nuovo.'],
+   ['tip','A scuola l’installazione potrebbe richiedere il permesso dell’insegnante: chiedi sempre prima di scaricare.']
+ ]},
+
+{key:'screenshot',icon:'screenshot',group:'Per esperti',noVideo:true,
+ title:'Screenshot e Markup',
+ eyebrow:'Catturare e annotare lo schermo',
+ lead:'Uno screenshot è una “foto” di ciò che vedi sullo schermo. Con Markup puoi poi scriverci e disegnarci sopra.',
+ source:'support.apple.com · Manuale utente di iPad',
+ body:[
+   ['p','Lo screenshot serve a salvare una pagina, una consegna o un risultato per rivederlo o condividerlo più tardi.'],
+   ['h3','steps','Acquisire uno screenshot'],
+   ['ul',['Su iPad con <b>Face ID</b>: premi e rilascia insieme il <b>tasto in alto</b> e un <b>tasto del volume</b>.','Su iPad con <b>tasto Home</b>: premi e rilascia insieme il <b>tasto in alto</b> e il <b>tasto Home</b>.','In basso a sinistra compare una piccola <b>anteprima</b>.']],
+   ['h3','pencil','Annotare con Markup'],
+   ['ul',['Tocca l’<b>anteprima</b> in basso a sinistra per aprirla.','Usa gli strumenti di Markup: <b>penna</b>, <b>evidenziatore</b>, <b>matita</b>, <b>gomma</b> e <b>righello</b>.','Scegli colore e spessore del tratto, poi tocca <b>Fine</b>.']],
+   ['h3','spark','Dove si salva'],
+   ['p','Tocca <b>Fine</b> e scegli <b>Salva in Foto</b>: ritrovi lo screenshot nell’app <b>Foto</b>.'],
+   ['tip','Con la Apple Pencil puoi fare uno screenshot trascinando dall’angolo in basso dello schermo e iniziare subito ad annotarlo.']
+ ]},
+
 {key:'trucchi1',icon:'bulb',group:'Per esperti',
  title:'Trucchi utili · Parte 1',
  eyebrow:'Diventare più veloci',
@@ -598,7 +760,11 @@ LESSONS.forEach((l,i)=>{
   const b=document.createElement('button');
   b.className='nav-btn';
   b.dataset.i=i;
-  b.innerHTML='<span class="ico">'+svg(l.icon)+'</span><span class="btn-label">'+l.title+'</span><span class="num">'+String(i+1).padStart(2,'0')+'</span>';
+  const badge=l.noVideo?'<span class="guide-tag">guida</span>':(l.type==='gallery'?'<span class="guide-tag special">speciale</span>':'');
+  b.innerHTML='<span class="ico">'+svg(l.icon)+'</span>'+
+    '<span class="btn-label">'+l.title+badge+'</span>'+
+    '<span class="nav-meta"><span class="seen-ico" aria-hidden="true">'+svg('check')+'</span>'+
+    '<span class="num">'+String(i+1).padStart(2,'0')+'</span></span>';
   b.addEventListener('click',()=>{select(i);closeMenu();});
   navList.appendChild(b);
 });
@@ -625,29 +791,105 @@ function buildBody(body){
   return html;
 }
 
+const viewed=new Set(); // solo di sessione — nessun localStorage (lab condiviso)
+const videoWrap=document.getElementById('videoWrap');
+const guidePanel=document.getElementById('guidePanel');
+const lessonView=document.getElementById('lessonView');
+const galleryView=document.getElementById('galleryView');
+const galleryStage=document.getElementById('galleryStage');
+const galleryDots=document.getElementById('galleryDots');
+const galleryPrev=document.getElementById('galleryPrev');
+const galleryNext=document.getElementById('galleryNext');
+let galleryData=null,gIndex=0;
+
+function markViewed(i){
+  if(viewed.has(i))return;
+  viewed.add(i);
+  const btn=document.querySelector('.nav-btn[data-i="'+i+'"]');
+  if(btn)btn.classList.add('is-seen');
+}
+
+function ytEmbed(id){return 'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?rel=0&modestbranding=1&fs=0&disablekb=1&iv_load_policy=3&playsinline=1&enablejsapi=1';}
+function showGalleryItem(n){
+  if(!galleryData)return;
+  gIndex=(n+galleryData.length)%galleryData.length;
+  const v=galleryData[gIndex];
+  galleryStage.innerHTML='<div class="gallery-frame '+(v.vertical?'v':'h')+'">'+
+    '<iframe src="'+ytEmbed(v.id)+'" title="'+v.title+'" loading="lazy" '+
+    'allow="autoplay; encrypted-media"><\/iframe></div>';
+  [...galleryDots.children].forEach((d,i)=>d.classList.toggle('active',i===gIndex));
+}
+function buildGallery(l){
+  galleryData=l.videos;gIndex=0;
+  galleryDots.innerHTML='';
+  l.videos.forEach((v,i)=>{
+    const d=document.createElement('button');
+    d.className='gallery-dot';d.textContent=(i+1);
+    d.setAttribute('aria-label','Video '+(i+1)+': '+v.title);
+    d.addEventListener('click',()=>showGalleryItem(i));
+    galleryDots.appendChild(d);
+  });
+  showGalleryItem(0);
+}
+galleryPrev.addEventListener('click',()=>showGalleryItem(gIndex-1));
+galleryNext.addEventListener('click',()=>showGalleryItem(gIndex+1));
+
+function setActiveNav(i){
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',Number(b.dataset.i)===i));
+  prevBtn.disabled=(i===0);
+  nextBtn.disabled=(i===LESSONS.length-1);
+  markViewed(i);
+  const act=document.querySelector('.nav-btn.active');
+  if(act)act.scrollIntoView({block:'nearest'});
+}
+
 function select(i){
   if(i<0||i>=LESSONS.length)return;
   current=i;
   const l=LESSONS[i];
-  player.pause();
-  player.src=l.video;
-  player.load();
+
+  if(l.type==='gallery'){
+    player.pause();player.removeAttribute('src');player.load();
+    lessonView.hidden=true;
+    galleryView.hidden=false;
+    buildGallery(l);
+    topChip.textContent=String(i+1).padStart(2,'0');
+    topTitle.textContent=l.title;
+    topSub.textContent='Lezione '+(i+1)+' di '+LESSONS.length+' · '+l.group;
+    setActiveNav(i);
+    return;
+  }
+
+  galleryView.hidden=true;
+  galleryStage.innerHTML=''; // ferma l'eventuale video YouTube
+  lessonView.hidden=false;
+
+  if(l.noVideo){
+    player.pause();
+    player.removeAttribute('src');
+    player.load();
+    videoWrap.hidden=true;
+    guidePanel.hidden=false;
+    guidePanel.querySelector('.gp-ico').innerHTML=svg(l.icon);
+  }else{
+    guidePanel.hidden=true;
+    videoWrap.hidden=false;
+    player.pause();
+    player.src=l.video;
+    player.load();
+  }
+  const src=l.source||'support.apple.com · Manuale utente di iPad';
+  const sourceLine='<p class="source">'+svg('book')+'Fonte: '+src+'</p>';
   textCard.innerHTML=
     '<div class="eyebrow">'+svg('spark')+l.eyebrow+'</div>'+
     '<h2>'+l.title+'</h2>'+
     '<p class="lead">'+l.lead+'</p>'+
-    buildBody(l.body);
+    buildBody(l.body)+sourceLine;
   topChip.textContent=String(i+1).padStart(2,'0');
   topTitle.textContent=l.title;
   topSub.textContent='Lezione '+(i+1)+' di '+LESSONS.length+' · '+l.group;
-  document.querySelectorAll('.nav-btn').forEach(b=>{
-    b.classList.toggle('active',Number(b.dataset.i)===i);
-  });
-  prevBtn.disabled=(i===0);
-  nextBtn.disabled=(i===LESSONS.length-1);
   textCard.scrollTop=0;
-  const act=document.querySelector('.nav-btn.active');
-  if(act)act.scrollIntoView({block:'nearest'});
+  setActiveNav(i);
 }
 prevBtn.addEventListener('click',()=>select(current-1));
 nextBtn.addEventListener('click',()=>select(current+1));

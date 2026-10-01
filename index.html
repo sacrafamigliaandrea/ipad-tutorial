@@ -192,10 +192,8 @@
   .gallery{height:100%;display:flex;flex-direction:column;min-height:0}
   .gallery[hidden]{display:none}
   .gallery-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
-  .gallery-frame{max-width:100%;margin:0 auto}
-  .gallery-frame.h{width:min(100%, calc((100vh - 250px) * 16 / 9));aspect-ratio:16/9}
-  .gallery-frame.v{height:calc(100vh - 250px);aspect-ratio:9/16;max-width:100%}
-  .gallery-frame iframe{display:block;width:100%;height:100%;border:0;border-radius:var(--radius);box-shadow:var(--shadow);background:#000}
+  .gallery-stage .yt-player{max-width:min(100%, calc((100vh - 250px) * 16 / 9))}
+  .gallery-stage .yt-player.v{height:100%;max-height:calc(100vh - 250px);width:auto}
   .gallery-nav{
     flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:12px;padding-top:18px;flex-wrap:wrap;
   }
@@ -217,6 +215,72 @@
   .gallery-arrow:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
   .gallery-arrow svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
   .gallery-arrow:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+
+  /* ---------- Player YouTube senza distrattori (IFrame API) ---------- */
+  /* layout largo per video orizzontale 16:9 */
+  .lesson.wide{grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr)}
+  .yt-player{
+    position:relative;width:100%;max-width:100%;max-height:100%;aspect-ratio:16/9;
+    margin:auto;border-radius:var(--radius);overflow:hidden;
+    box-shadow:var(--shadow);background:#000;
+  }
+  .yt-player.v{aspect-ratio:9/16;width:auto;height:100%}
+  .yt-holder{position:absolute;inset:0;z-index:1}
+  /* l'iframe YouTube non riceve click: niente titolo, "Guarda su YouTube", condividi, ingranaggio */
+  .yt-holder iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
+  /* poster opaco nostro: nasconde l'anteprima e i comandi di YouTube finché non si avvia */
+  .yt-poster{
+    position:absolute;inset:0;z-index:3;border:0;cursor:pointer;
+    background-size:cover;background-position:center;
+    display:grid;place-items:center;
+  }
+  .yt-poster[hidden]{display:none}
+  .yt-bigplay{
+    width:84px;height:84px;border-radius:50%;
+    background:linear-gradient(120deg,var(--teal),var(--coral));
+    display:grid;place-items:center;box-shadow:var(--shadow);
+    transition:transform .14s ease;
+  }
+  .yt-poster:hover .yt-bigplay{transform:scale(1.06)}
+  .yt-bigplay svg{width:36px;height:36px;fill:#fff;margin-left:4px}
+  .yt-poster:focus-visible{outline:3px solid var(--amber);outline-offset:-4px}
+  /* overlay di fine video: copre gli eventuali correlati di YouTube */
+  .yt-end{
+    position:absolute;inset:0;z-index:4;
+    background:rgba(28,17,64,.94);color:#fff;text-align:center;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;
+  }
+  .yt-end[hidden]{display:none}
+  .yt-end .yt-replay{
+    font-family:'Lexend',sans-serif;font-weight:600;font-size:16px;cursor:pointer;
+    border:0;border-radius:13px;padding:12px 22px;color:#fff;
+    background:linear-gradient(120deg,var(--teal),var(--coral));
+    display:inline-flex;align-items:center;gap:9px;box-shadow:var(--shadow-sm);
+  }
+  .yt-end .yt-replay svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .yt-end .yt-replay:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+  /* barra comandi ricostruita da noi */
+  .yt-bar{
+    position:absolute;left:0;right:0;bottom:0;z-index:2;
+    display:flex;align-items:center;gap:10px;padding:12px;
+    background:linear-gradient(to top,rgba(28,17,64,.82),rgba(28,17,64,0));
+  }
+  .yt-btn{
+    width:40px;height:40px;flex:0 0 40px;border-radius:11px;border:0;cursor:pointer;
+    background:rgba(255,255,255,.18);color:#fff;display:grid;place-items:center;
+    transition:background .16s ease;
+  }
+  .yt-btn:hover{background:rgba(255,255,255,.32)}
+  .yt-btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+  .yt-btn svg{width:20px;height:20px}
+  .yt-seek{
+    flex:1;height:6px;cursor:pointer;accent-color:var(--teal);
+  }
+  .yt-seek:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+  .yt-time{
+    font-family:'Lexend',sans-serif;font-size:13px;color:#fff;
+    min-width:92px;text-align:right;letter-spacing:.02em;flex:0 0 auto;
+  }
 
   /* video a sinistra — niente bande nere, riempie l'altezza disponibile */
   .video-wrap{height:100%;min-height:0;display:flex;flex-direction:column}
@@ -305,15 +369,18 @@
     .topbar{position:sticky;top:0;backdrop-filter:saturate(1.4) blur(10px);border-radius:0}
     .stage{flex:none;min-height:0;overflow:visible;padding:20px 18px 40px}
     .lesson{height:auto;grid-template-columns:1fr;gap:22px}
+    .lesson.wide{grid-template-columns:1fr}
     .video-wrap{height:auto}
     .video-frame{display:block}
     .video-frame video{max-height:72vh;margin:0 auto}
+    .yt-player{width:100%;max-height:none;margin:0 auto}
+    .yt-player.v{width:min(100%,300px)}
     .guide-panel{height:auto;min-height:230px}
     .text-card{height:auto;overflow:visible;padding:4px}
     .gallery{height:auto}
     .gallery-stage{display:block}
-    .gallery-frame.h{width:100%}
-    .gallery-frame.v{height:auto;width:min(100%,300px)}
+    .gallery-stage .yt-player{max-width:100%;margin:0 auto}
+    .gallery-stage .yt-player.v{height:auto;width:min(100%,300px)}
     .topbar-nav button span.lbl{display:none}
   }
   @media (max-width:860px){
@@ -407,6 +474,14 @@
           <span class="gp-text">Argomento spiegato a testo,<br>senza video</span>
         </div>
 
+        <div class="video-wrap" id="ytWrap" hidden>
+          <div class="video-frame" id="lessonYtHost"></div>
+          <div class="video-meta">
+            <svg viewBox="0 0 24 24"><polygon points="9 7 17 12 9 17 9 7"/><circle cx="12" cy="12" r="10"/></svg>
+            <span>Video · tocca play per iniziare</span>
+          </div>
+        </div>
+
         <div class="text-card" id="textCard"></div>
       </article>
 
@@ -454,7 +529,8 @@ const ICON = {
   share:'<path d="M12 15V4"/><path d="M8.5 7.5L12 4l3.5 3.5"/><path d="M6 12v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6"/>',
   download:'<path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 19h14"/>',
   book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20"/>',
-  gallery:'<rect x="2.5" y="5" width="19" height="12" rx="2"/><polygon points="10 8.5 14.5 11 10 13.5"/><line x1="7" y1="20" x2="17" y2="20"/>'
+  gallery:'<rect x="2.5" y="5" width="19" height="12" rx="2"/><polygon points="10 8.5 14.5 11 10 13.5"/><line x1="7" y1="20" x2="17" y2="20"/>',
+  news:'<path d="M4 10v4a1 1 0 0 0 1 1h2.5L12 19V5L7.5 9H5a1 1 0 0 0-1 1z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a8 8 0 0 1 0 11"/>'
 };
 function svg(name,extra){return '<svg viewBox="0 0 24 24">'+(ICON[name]||'')+'</svg>';}
 
@@ -471,6 +547,32 @@ const LESSONS=[
    ['h3','steps','I primi gesti'],
    ['ul',['Per <b>accenderlo</b> premi il tasto in alto finché compare la mela.','Per <b>sbloccarlo</b> appoggia il dito sul tasto o digita il codice.','Per <b>spegnere lo schermo</b> premi una volta il tasto in alto.']],
    ['tip','Tieni l’iPad con due mani ai lati: è il modo più sicuro per non farlo cadere mentre impari.']
+ ]},
+
+{key:'ipados27',icon:'news',group:'Novità',type:'yt',ytid:'jov284Uf1Ck',vertical:false,start:41,end:1009,
+ title:'iPadOS 27 · Le novità',
+ eyebrow:'L’aggiornamento appena uscito',
+ lead:'Ogni anno l’iPad riceve un grande aggiornamento che aggiunge funzioni nuove. Questo video mostra le novità di iPadOS 27 provate su un iPad vero.',
+ source:'YouTube · Gaetano Abatemarco',
+ body:[
+   ['p','Un aggiornamento di sistema (<b>iPadOS</b>) è come il “tagliando” dell’iPad: aggiunge funzioni, corregge errori e migliora la sicurezza. <b>iPadOS 27</b> è la versione appena uscita.'],
+   ['h3','gallery','Guarda e scopri'],
+   ['ul',['Nel video trovi le principali novità, provate su un iPad vero.','Osserva cosa cambia nell’aspetto e nei gesti.','Segnati una funzione che ti piacerebbe provare in classe.']],
+   ['h3','download','Controllare gli aggiornamenti'],
+   ['ul',['Apri <b>Impostazioni</b>.','Tocca <b>Generali</b>, poi <b>Aggiornamento Software</b>.','Se c’è un aggiornamento disponibile, l’iPad te lo mostra qui.']],
+   ['tip','A scuola non aggiornare l’iPad da solo: gli iPad della classe li aggiorna l’insegnante o l’Animatore Digitale. Prima chiedi sempre.']
+ ]},
+
+{key:'ipados27b',icon:'news',group:'Novità',type:'yt',ytid:'Gp3qUbll2p8',vertical:false,
+ title:'iPadOS 27 · Altre novità',
+ eyebrow:'Un secondo sguardo',
+ lead:'Un altro video che riassume le novità di iPadOS 27: confrontare due spiegazioni aiuta a capire meglio cosa cambia.',
+ source:'YouTube · Tech Dolce Vita',
+ body:[
+   ['p','Lo stesso argomento raccontato da una voce diversa: alcune funzioni le ritrovi, altre vengono spiegate in modo nuovo. È un buon allenamento ad ascoltare più fonti.'],
+   ['h3','gallery','Mentre guardi'],
+   ['ul',['Nota le funzioni che compaiono in <b>tutti e due</b> i video: sono le più importanti.','Fermati quando una novità ti incuriosisce e provala sull’iPad.','Scrivi nelle Note una cosa nuova che hai imparato.']],
+   ['tip','Guardare due video sullo stesso tema non è una perdita di tempo: ripetere con parole diverse fa ricordare meglio.']
  ]},
 
 {key:'gesture',icon:'gesture',group:'Le basi',
@@ -790,6 +892,10 @@ const galleryPrev=document.getElementById('galleryPrev');
 const galleryNext=document.getElementById('galleryNext');
 let galleryData=null,gIndex=0;
 
+// riferimenti player YouTube
+const ytWrap=document.getElementById('ytWrap');
+const lessonYtHost=document.getElementById('lessonYtHost');
+
 function markViewed(i){
   if(viewed.has(i))return;
   viewed.add(i);
@@ -797,14 +903,11 @@ function markViewed(i){
   if(btn)btn.classList.add('is-seen');
 }
 
-function ytEmbed(id){return 'https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?rel=0&modestbranding=1&fs=0&disablekb=1&iv_load_policy=3&playsinline=1&enablejsapi=1';}
 function showGalleryItem(n){
   if(!galleryData)return;
   gIndex=(n+galleryData.length)%galleryData.length;
   const v=galleryData[gIndex];
-  galleryStage.innerHTML='<div class="gallery-frame '+(v.vertical?'v':'h')+'">'+
-    '<iframe src="'+ytEmbed(v.id)+'" title="'+v.title+'" loading="lazy" '+
-    'allow="autoplay; encrypted-media"><\/iframe></div>';
+  ytMount(galleryYT,v.id,0,0,v.vertical);
   [...galleryDots.children].forEach((d,i)=>d.classList.toggle('active',i===gIndex));
 }
 function buildGallery(l){
@@ -822,6 +925,123 @@ function buildGallery(l){
 galleryPrev.addEventListener('click',()=>showGalleryItem(gIndex-1));
 galleryNext.addEventListener('click',()=>showGalleryItem(gIndex+1));
 
+// ---------- Player YouTube senza distrattori (IFrame API, componente riutilizzabile) ----------
+// La skill: i parametri dell'embed non bastano. Serve controls:0 + iframe pointer-events:none
+// + poster opaco nostro + overlay di fine video + comandi ricostruiti. Un'istanza per vista.
+const YT_PLAY='<svg viewBox="0 0 24 24" fill="#fff"><polygon points="7 5 19 12 7 19"/></svg>';
+const YT_PAUSE='<svg viewBox="0 0 24 24" fill="#fff"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+const YT_VOL='<svg viewBox="0 0 24 24" fill="#fff" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="4 9 9 9 13 5 13 19 9 15 4 15"/><path d="M16.5 9.5a4 4 0 0 1 0 5" fill="none"/></svg>';
+const YT_MUTE='<svg viewBox="0 0 24 24" fill="#fff" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="4 9 9 9 13 5 13 19 9 15 4 15"/><line x1="16" y1="9" x2="21" y2="15" fill="none"/><line x1="21" y1="9" x2="16" y2="15" fill="none"/></svg>';
+
+let ytApiReady=false, ytSeq=0, ytWaiting=[];
+function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+
+function loadYTApi(){
+  if(window.YT&&window.YT.Player){ytApiReady=true;return;}
+  if(document.getElementById('yt-iframe-api'))return;
+  const t=document.createElement('script');
+  t.id='yt-iframe-api';t.src='https://www.youtube.com/iframe_api';
+  document.head.appendChild(t);
+}
+window.onYouTubeIframeAPIReady=function(){
+  ytApiReady=true;
+  const w=ytWaiting;ytWaiting=[];
+  w.forEach(x=>ytCreate(x.ctrl,x.id));
+};
+
+function createYTPlayer(host){
+  const uid='ytmount'+(++ytSeq);
+  host.innerHTML=
+    '<div class="yt-player">'+
+      '<div class="yt-holder"><div id="'+uid+'"></div></div>'+
+      '<div class="yt-bar">'+
+        '<button class="yt-btn yt-play" aria-label="Riproduci o metti in pausa"></button>'+
+        '<input class="yt-seek" type="range" min="0" max="100" value="0" step="0.1" aria-label="Avanzamento del video">'+
+        '<span class="yt-time">0:00 / 0:00</span>'+
+        '<button class="yt-btn yt-mute" aria-label="Attiva o disattiva l’audio"></button>'+
+      '</div>'+
+      '<button class="yt-poster" aria-label="Avvia il video"><span class="yt-bigplay" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="7 5 19 12 7 19"/></svg></span></button>'+
+      '<div class="yt-end" hidden><span>Video terminato</span><button class="yt-replay"><svg viewBox="0 0 24 24"><polyline points="4 4 4 9 9 9"/><path d="M5 13a7 7 0 1 0 2-5l-3 3"/></svg>Rivedi il video</button></div>'+
+    '</div>';
+  const box=host.querySelector('.yt-player');
+  const ctrl={
+    player:null,timer:null,scrub:false,clipStart:0,clipEnd:0,mountId:uid,
+    box:box,
+    holder:box.querySelector('.yt-holder'),
+    poster:box.querySelector('.yt-poster'),
+    end:box.querySelector('.yt-end'),
+    playBtn:box.querySelector('.yt-play'),
+    muteBtn:box.querySelector('.yt-mute'),
+    seek:box.querySelector('.yt-seek'),
+    time:box.querySelector('.yt-time'),
+    replay:box.querySelector('.yt-replay')
+  };
+  ctrl.playBtn.innerHTML=YT_PLAY;ctrl.muteBtn.innerHTML=YT_VOL;
+  ctrl.poster.addEventListener('click',()=>{if(ctrl.player&&ctrl.player.playVideo){if(ctrl.clipStart)ctrl.player.seekTo(ctrl.clipStart,true);ctrl.player.playVideo();}});
+  ctrl.playBtn.addEventListener('click',()=>{if(!ctrl.player)return;const st=ctrl.player.getPlayerState?ctrl.player.getPlayerState():-1;if(st===1)ctrl.player.pauseVideo();else ctrl.player.playVideo();});
+  ctrl.muteBtn.addEventListener('click',()=>{if(!ctrl.player)return;if(ctrl.player.isMuted()){ctrl.player.unMute();ctrl.muteBtn.innerHTML=YT_VOL;}else{ctrl.player.mute();ctrl.muteBtn.innerHTML=YT_MUTE;}});
+  ctrl.seek.addEventListener('input',()=>{ctrl.scrub=true;const span=Math.max(0,ctrl.clipEnd-ctrl.clipStart);ctrl.time.textContent=fmt(span*ctrl.seek.value/100)+' / '+fmt(span);});
+  ctrl.seek.addEventListener('change',()=>{if(ctrl.player&&ctrl.player.seekTo){const span=Math.max(0,ctrl.clipEnd-ctrl.clipStart);ctrl.player.seekTo(ctrl.clipStart+span*ctrl.seek.value/100,true);}ctrl.scrub=false;});
+  ctrl.replay.addEventListener('click',()=>{if(ctrl.player){ctrl.end.hidden=true;ctrl.player.seekTo(ctrl.clipStart||0,true);ctrl.player.playVideo();}});
+  return ctrl;
+}
+
+function ytStopTimer(ctrl){if(ctrl.timer){clearInterval(ctrl.timer);ctrl.timer=null;}}
+
+function ytProgress(ctrl){
+  const p=ctrl.player;if(!p||!p.getCurrentTime)return;
+  const cur=p.getCurrentTime();
+  const span=Math.max(0,ctrl.clipEnd-ctrl.clipStart);
+  const rel=Math.min(Math.max(0,cur-ctrl.clipStart),span);
+  if(!ctrl.scrub)ctrl.seek.value=span?(rel/span*100):0;
+  ctrl.time.textContent=fmt(rel)+' / '+fmt(span);
+  if(ctrl.clipEnd&&cur>=ctrl.clipEnd-0.25){p.pauseVideo();ytStopTimer(ctrl);ctrl.playBtn.innerHTML=YT_PLAY;ctrl.end.hidden=false;}
+}
+
+function ytDestroy(ctrl){
+  if(!ctrl)return;
+  ytWaiting=ytWaiting.filter(x=>x.ctrl!==ctrl);
+  ytStopTimer(ctrl);
+  if(ctrl.player){try{ctrl.player.destroy();}catch(e){}ctrl.player=null;}
+  ctrl.holder.innerHTML='<div id="'+ctrl.mountId+'"></div>';
+}
+
+function ytMount(ctrl,id,start,end,vertical){
+  ytDestroy(ctrl);
+  ctrl.clipStart=start||0;ctrl.clipEnd=end||0;ctrl.scrub=false;
+  ctrl.box.classList.toggle('v',!!vertical);
+  ctrl.poster.style.backgroundImage="linear-gradient(rgba(28,17,64,.28),rgba(28,17,64,.5)),url('https://i.ytimg.com/vi/"+id+"/hqdefault.jpg')";
+  ctrl.poster.hidden=false;ctrl.end.hidden=true;
+  ctrl.playBtn.innerHTML=YT_PLAY;ctrl.muteBtn.innerHTML=YT_VOL;
+  ctrl.seek.value=0;ctrl.time.textContent='0:00 / '+fmt(Math.max(0,ctrl.clipEnd-ctrl.clipStart));
+  if(!ytApiReady){ytWaiting.push({ctrl:ctrl,id:id});loadYTApi();return;}
+  ytCreate(ctrl,id);
+}
+
+function ytCreate(ctrl,id){
+  const vars={controls:0,disablekb:1,rel:0,iv_load_policy:3,playsinline:1,modestbranding:1,fs:0};
+  if(ctrl.clipStart)vars.start=Math.floor(ctrl.clipStart);
+  if(ctrl.clipEnd)vars.end=Math.ceil(ctrl.clipEnd);
+  ctrl.player=new YT.Player(ctrl.mountId,{
+    host:'https://www.youtube-nocookie.com',
+    videoId:id,
+    playerVars:vars,
+    events:{
+      onReady:function(){ctrl.muteBtn.innerHTML=(ctrl.player.isMuted&&ctrl.player.isMuted())?YT_MUTE:YT_VOL;ytProgress(ctrl);},
+      onStateChange:function(e){
+        const S=window.YT.PlayerState;
+        if(e.data===S.PLAYING){ctrl.poster.hidden=true;ctrl.end.hidden=true;ctrl.playBtn.innerHTML=YT_PAUSE;ytStopTimer(ctrl);ctrl.timer=setInterval(()=>ytProgress(ctrl),200);}
+        else if(e.data===S.PAUSED){ctrl.playBtn.innerHTML=YT_PLAY;}
+        else if(e.data===S.ENDED){ctrl.playBtn.innerHTML=YT_PLAY;ytStopTimer(ctrl);ctrl.end.hidden=false;}
+      }
+    }
+  });
+}
+
+// due istanze: lezioni iPadOS (video a sinistra) e galleria Keynote (video al centro)
+const lessonYT=createYTPlayer(lessonYtHost);
+const galleryYT=createYTPlayer(galleryStage);
+
 function setActiveNav(i){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',Number(b.dataset.i)===i));
   prevBtn.disabled=(i===0);
@@ -836,6 +1056,12 @@ function select(i){
   current=i;
   const l=LESSONS[i];
 
+  // ferma e smonta qualsiasi player YouTube della vista precedente
+  ytDestroy(lessonYT);
+  ytDestroy(galleryYT);
+  ytWrap.hidden=true;
+  lessonView.classList.remove('wide');
+
   if(l.type==='gallery'){
     player.pause();player.removeAttribute('src');player.load();
     lessonView.hidden=true;
@@ -849,17 +1075,25 @@ function select(i){
   }
 
   galleryView.hidden=true;
-  galleryStage.innerHTML=''; // ferma l'eventuale video YouTube
   lessonView.hidden=false;
 
-  if(l.noVideo){
+  if(l.type==='yt'){
+    player.pause();player.removeAttribute('src');player.load();
+    videoWrap.hidden=true;
+    guidePanel.hidden=true;
+    ytWrap.hidden=false;
+    lessonView.classList.add('wide');
+    ytMount(lessonYT,l.ytid,l.start,l.end,l.vertical);
+  }else if(l.noVideo){
     player.pause();
     player.removeAttribute('src');
     player.load();
+    ytWrap.hidden=true;
     videoWrap.hidden=true;
     guidePanel.hidden=false;
     guidePanel.querySelector('.gp-ico').innerHTML=svg(l.icon);
   }else{
+    ytWrap.hidden=true;
     guidePanel.hidden=true;
     videoWrap.hidden=false;
     player.pause();
